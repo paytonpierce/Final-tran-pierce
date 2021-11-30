@@ -1,4 +1,4 @@
-package com.company.com.company;
+package com.company;
 
 public class Stakeholder {
     private String Id;
