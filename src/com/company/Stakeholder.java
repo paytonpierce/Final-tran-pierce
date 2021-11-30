@@ -35,4 +35,11 @@ public class Stakeholder {
     public void setBalance(double b){
         this.balance = b;
     }
+
+    public String toString() {
+        return "ID: " + Id + " " +
+                "Name: " + name + " " +
+                "Address: " + address + " " +
+                "Balance: " + balance;
+    }
 }

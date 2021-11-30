@@ -35,4 +35,12 @@ public class Artefact {
     public void setOwner(Stakeholder s){
         this.owner = s;
     }
+
+    public String toString() {
+        return "Id: " + Id + " " +
+                "Name: " + name + " " +
+                "Country: " + country + " " +
+                "Owner: " + owner;
+    }
+
 }

@@ -57,4 +57,14 @@ public class Transaction {
     public void setPrice(double p){
         this.price = p;
     }
+
+    public String toString() {
+        return "Artefact: " + artefact + " " +
+                "Time Stamp: " + timestamp + " " +
+                "Seller: " + seller + " " +
+                "Buyer: " + buyer + " " +
+                "Auction House: " + AuctionHouse + " " +
+                "Price: " + price;
+    }
+
 }
