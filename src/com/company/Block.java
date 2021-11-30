@@ -5,7 +5,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.Random;
-import java.io.UnsupportedEncodingException;
 
 
 public class Block {
@@ -72,4 +71,57 @@ public class Block {
         }
         return buffer.toString();
     }
+
+    public void mineBlock(int prefix) {
+
+        //If the transaction meets the stakeholders agreement in TreatySC, mine the block;
+        if (TreatySC(data) == true) {
+            setHash(mineBlock(prefix));
+        } else {
+            //otherwise abort the transaction and display a proper message.
+            System.out.println("The transaction does not meet the stakeholders agreement! Abort!");
+        }
+
+        //define prefix desire to find
+        //check whether found solution
+        while (TreatySC(data) == true) {
+
+        }
+        //loop goes on
+
+        //Note: you should start with a random value of nonce and increment it by one. However, there
+        //are more sophisticated strategies to start and increment a nonce in real-world applications.
+
+    }
+
+
+
+
+    public boolean TreatySC (Transaction t) {
+        //The sale must not happen if the artefact doesn’t have at least 2 transactions after 2001
+        //already logged in the blockchain
+
+
+        //must have enough money to cover the price:
+        if (t.getBuyer().getBalance() >= t.getPrice()) {
+            //10%
+            t.getAuctionHouse().setBalance((t.getArtefact().getOwner().getBalance()) + (.10 * t.getPrice()));
+            //20%
+            //need country artefact balance
+            double ArtefactBal = t.getArtefact().getOwner().getBalance();
+            t.getArtefact().getOwner().setBalance(ArtefactBal + (.20 * t.getPrice()));
+            //70%
+            t.getSeller().setBalance((t.getSeller().getBalance()) + (.70 * t.getPrice()));
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
+
+
 }
