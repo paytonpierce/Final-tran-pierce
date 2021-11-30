@@ -72,6 +72,23 @@ public class Block {
         return buffer.toString();
     }
 
+    public Transaction retrieveProvenance(String id){
+        if(this.data.getArtefact().getId() == id){
+            return this.data;
+        }
+        else{
+            return null;
+        }
+    }
+    public Transaction retrieveProvenance(String id, long time){
+        if(this.data.getArtefact().getId() == id && this.getTimeStamp() > time){
+            return this.getData();
+        }
+        else{
+            return null;
+        }
+    }
+
     public void mineBlock(int prefix) {
 
         //If the transaction meets the stakeholders agreement in TreatySC, mine the block;
