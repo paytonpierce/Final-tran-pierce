@@ -1,4 +1,7 @@
-package com.company;
+package com.company.com.company;
+
+import com.company.com.company.Artefact;
+import com.company.com.company.Stakeholder;
 
 import java.time.LocalDateTime;
 
