@@ -29,26 +29,11 @@ public class Main {
             return false;
         }
     }
-/*
-    public Transaction retrieveProvenance(String id){
-        if(this.data.getArtefact().getId() == id){
-            return this.data;
-        }
-        else{
-            return null;
-        }
-    }
-    public Transaction retrieveProvenance(String id, long time){
-        //if(this.data.getArtefact().getId() == id && this.getTimeStamp() > time){
-            return this.getData();
-        }
-        else{
-            return null;
-        }
-    }
 
 
-*/
+
+
+
 
 
 

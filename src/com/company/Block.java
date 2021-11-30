@@ -14,7 +14,7 @@ public class Block {
     public int nonce;
     public String hash;
 
-    public Block(String ph, Transaction d, String h){
+    public Block(String ph, Transaction d, String h) {
         previousHash = ph;
         data = d;
         timeStamp = Long.parseLong(LocalDateTime.now().toString());
@@ -22,39 +22,47 @@ public class Block {
     }
 
 
-
-    public String getPreviousHash(){
+    public String getPreviousHash() {
         return this.previousHash;
     }
-    public void setPreviousHash(String ph){
+
+    public void setPreviousHash(String ph) {
         this.previousHash = ph;
     }
-    public Transaction getData(){
+
+    public Transaction getData() {
         return this.data;
     }
-    public void setData(Transaction d){
+
+    public void setData(Transaction d) {
         this.data = d;
     }
-    public long getTimeStamp(){
+
+    public long getTimeStamp() {
         return this.timeStamp;
     }
-    public void setTimeStamp(long t){
+
+    public void setTimeStamp(long t) {
         this.timeStamp = t;
     }
-    public int getNonce(){
+
+    public int getNonce() {
         return this.nonce;
     }
-    public void setNonce(int n){
+
+    public void setNonce(int n) {
         this.nonce = n;
     }
-    public String getHash(){
+
+    public String getHash() {
         return this.hash;
     }
-    public void setHash(String h){
+
+    public void setHash(String h) {
         this.hash = h;
     }
 
-    public String calculateBlockHash(){
+    public String calculateBlockHash() {
         String dataToHash = previousHash
                 + Long.toString(timeStamp)
                 + Integer.toString(nonce)
@@ -93,39 +101,57 @@ public class Block {
         }
 
 
-
     }
-    public boolean TreatySC (Transaction t) {
+
+    public boolean TreatySC(Transaction t) {
         //The sale must not happen if the artefact doesn’t have at least 2 transactions after 2001
 
-            //already logged in the blockchain
+        //already logged in the blockchain
 
 
-            //must have enough money to cover the price:
-            if (t.getBuyer().getBalance() >= t.getPrice()) {
-                //10%
-                t.getAuctionHouse().setBalance((t.getArtefact().getOwner().getBalance()) + (.10 * t.getPrice()));
-                //20%
-                //need country artefact balance
-                double ArtefactBal = t.getArtefact().getOwner().getBalance();
-                t.getArtefact().getOwner().setBalance(ArtefactBal + (.20 * t.getPrice()));
-                //70%
-                t.getSeller().setBalance((t.getSeller().getBalance()) + (.70 * t.getPrice()));
+        //must have enough money to cover the price:
+        if (t.getBuyer().getBalance() >= t.getPrice()) {
+            //10%
+            t.getAuctionHouse().setBalance((t.getArtefact().getOwner().getBalance()) + (.10 * t.getPrice()));
+            //20%
+            //need country artefact balance
+            double ArtefactBal = t.getArtefact().getOwner().getBalance();
+            t.getArtefact().getOwner().setBalance(ArtefactBal + (.20 * t.getPrice()));
+            //70%
+            t.getSeller().setBalance((t.getSeller().getBalance()) + (.70 * t.getPrice()));
 
-                return true;
-            } else {
-                return false;
-            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
-
-
-
-
-
-
-
-
-
-
+    public Transaction retrieveProvenance(String id) {
+        if (this.data.getArtefact().getId() == id) {
+            return this.data;
+        } else {
+            return null;
         }
+    }
+
+    public Transaction retrieveProvenance(String id, long time) {
+        if (this.data.getArtefact().getId() == id && this.getTimeStamp() > time) {
+            return this.getData();
+        } else {
+            return null;
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
