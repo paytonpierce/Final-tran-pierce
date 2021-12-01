@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="898bb8f8-f9c4-4d80-86cc-c448501dc8f0" name="Changes" comment="Changes">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Artefact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Artefact.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Stakeholder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Stakeholder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Transaction.java" afterDir="false" />
-    </list>
+    <list default="true" id="898bb8f8-f9c4-4d80-86cc-c448501dc8f0" name="Changes" comment="Changes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,6 +9,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="21Zq2Da4quAm3CYjtZBhDIvyqoi" />
   <component name="ProjectViewState">
@@ -30,13 +31,6 @@
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="com.company.com.company.Main" />
-      <module name="finalProject21-copy" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -46,6 +40,13 @@
       <option name="TEST_OBJECT" value="CLASS" />
       <properties />
       <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.company.Main" />
+      <module name="finalProject21-copy" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

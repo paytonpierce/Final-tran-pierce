@@ -1,11 +1,11 @@
-package com.company.com.company;
+package com.company;
 
 public class Artefact {
     private String Id;
     private String name;
-    private String country;
+    private Stakeholder country;
     private Stakeholder owner;
-    public Artefact(String i, String n, String c, Stakeholder s){
+    public Artefact(String i, String n, Stakeholder c, Stakeholder s){
         Id = i;
         name = n;
         country = c;
@@ -23,10 +23,10 @@ public class Artefact {
     public void setName(String n){
         this.name = n;
     }
-    public String getCountry(){
+    public Stakeholder getCountry(){
         return this.country;
     }
-    public void setCountry(String c){
+    public void setCountry(Stakeholder c){
         this.country = c;
     }
     public Stakeholder getOwner(){

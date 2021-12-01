@@ -1,4 +1,4 @@
-package com.company.com.company;
+package com.company;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -14,10 +14,10 @@ public class Block {
     public int nonce;
     public String hash;
 
-    public Block(String ph, Transaction d, String h) {
+    public Block(Transaction d, String ph, long t) {
         previousHash = ph;
         data = d;
-        timeStamp = Long.parseLong(LocalDateTime.now().toString());
+        timeStamp = t;
         nonce = new Random(10).nextInt();
     }
 
@@ -60,6 +60,14 @@ public class Block {
 
     public void setHash(String h) {
         this.hash = h;
+    }
+
+    public String toString() {
+        return "Previous Hash: " + this.previousHash + " " +
+                "Data: " + this.data + " " +
+                "TimeStamp: " + this.timeStamp + " " +
+                "Nonce: " + this.nonce + " " +
+                "Hash: " + this.hash;
     }
 
     public String calculateBlockHash() {
@@ -114,7 +122,7 @@ public class Block {
             //10%
             t.getAuctionHouse().setBalance((t.getArtefact().getOwner().getBalance()) + (.10 * t.getPrice()));
             //20%
-            //need country artefact balance
+            t.getArtefact().getCountry().setBalance(t.getArtefact().getCountry().getBalance() + .2*t.getPrice());
             double ArtefactBal = t.getArtefact().getOwner().getBalance();
             t.getArtefact().getOwner().setBalance(ArtefactBal + (.20 * t.getPrice()));
             //70%
