@@ -4,7 +4,14 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 
@@ -14,6 +21,10 @@ public class Block {
     private long timeStamp;
     public int nonce;
     public String hash;
+    public boolean hasBeenMined;
+    public boolean hasBeenCalculated;
+
+    private static final String DATE_FORMATTER= "yyyy-MM-ddTHH:mm:ss";
 
     public Block(Transaction d, String ph, long t) {
         previousHash = ph;
@@ -69,6 +80,23 @@ public class Block {
         this.hash = h;
     }
 
+    //for verification
+    public boolean getHasBeenMined() {
+        return this.hasBeenMined;
+    }
+
+    public void setHasBeenMined(boolean b) {
+        this.hasBeenMined = b;
+    }
+
+    public boolean getHasBeenCalculated() {
+        return this.hasBeenCalculated;
+    }
+
+    public void setHasBeenCalculated(boolean b) {
+        this.hasBeenCalculated= b;
+    }
+
     public String toString() {
         return "Previous Hash: " + this.previousHash + " " +
                 "Data: " + this.data + " " +
@@ -94,28 +122,32 @@ public class Block {
         for (byte b : bytes) {
             buffer.append(String.format("%02x", b));
         }
+        this.hasBeenCalculated = true;
         return buffer.toString();
     }
 
     public void mineBlock(int prefix) {
 
         //If the transaction meets the stakeholders' agreement in TreatySC, mine the block;
-        String hashValue = null;
-        Transaction data = null;
+        String hashValue = "";
+        for(int i = 0; i < prefix; i++){
+            hashValue.concat("0");
+        }
+        Transaction data = this.data;
         if (TreatySC(data) == true) {
             hashValue = new String(new char[prefix]).replace('\0', '0');
             //define prefix desire to find
             //check whether found solution
-            while (!hash.substring(0, prefix).equals(hashValue)) {
-                nonce++;
-                hash = calculateBlockHash();
+            while (!this.hash.substring(0, prefix).equals(hashValue)) {
+                this.nonce++;
+                this.hash = calculateBlockHash();
             }
+            this.hasBeenMined = true;
         } else {
             //otherwise abort the transaction and display a proper message.
             System.out.println("The transaction does not meet the stakeholders agreement! Abort!");
+            this.hasBeenMined = false;
         }
-
-
     }
 
     public ArrayList<Block> transactionCounter = new ArrayList<>();
@@ -123,10 +155,22 @@ public class Block {
 
     public boolean TreatySC(Transaction t) {
         //The sale must not happen if the artefact doesn’t have at least 2 transactions after 2001
-        if (transactionCounter.size() < 2) {
+        boolean value = true;
+        int loggedCount = 0;
+        if (retrieveProvenance(t.getArtefact().getId(), (t.getTimestamp().getYear() - 2001)) < 2) {
             System.out.println("The artefact does not have at least two transactions after 2001. Cannot run!");
+            //return false;
         }
         //already logged in the blockchain
+        for (int i = 0; i < Main.blockchain.size(); i++) {
+            if (Main.blockchain.get(i).getData().getArtefact().getId().equals(t.getArtefact().getId())) {
+                loggedCount++;
+            }
+        }
+        if (loggedCount < 1) {
+            System.out.println("The artefact is not logged in blockchain. Cannot run!");
+            return false;
+        }
         //must have enough money to cover the price:
         if (t.getBuyer().getBalance() >= t.getPrice()) {
             //10%
@@ -144,27 +188,25 @@ public class Block {
         }
     }
 
-    public ArrayList<Block> retrieveProvenance(String id) {
-        for (int i=0; i<Main.blockchain.size(); i++)
-            if (this.data.getArtefact().getId() == id) {
-                transactionCounter.add(Main.blockchain.get(i));
-
-
-            } else {
-                return null;
+    public int retrieveProvenance(String id) {
+        int count = 0;
+        for (int i = 0; i < Main.transactions.size(); i++) {
+            if ( Main.transactions.get(i).getArtefact() == this.data.getArtefact()) {
+                count++;
             }
-        return transactionCounter;
-
-    }
-
-    public Transaction retrieveProvenance(String id, long time) {
-        if (this.data.getArtefact().getId() == id && this.getTimeStamp() > time) {
-            return this.getData();
-        } else {
-            return null;
         }
+        return count;
     }
 
+    public int retrieveProvenance(String id, long timestamp) {
+        int count = 0;
+        for (int i = 0; i < Main.blockchain.size(); i++) {
+            if ( Main.blockchain.get(i).getData().getArtefact().getId().equals(this.data.getArtefact().getId()) && timestamp > 0) {
+                count++;
+            }
+        }
+        return count;
+    }
 }
 
 

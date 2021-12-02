@@ -1,56 +1,72 @@
 package com.company;
 
-import com.sun.source.tree.ArrayAccessTree;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Main {
+public class Main{
 
+    //user interface transactions
+    public static Transaction data1 = null;
+    public static Transaction data2 = null;
+    public static Transaction data3 = null;
+    public static ArrayList<Transaction> transactions = new ArrayList<>();
+    //list of objects for transaction option
+    public static ArrayList<Stakeholder> buyerList = new ArrayList<>();
+    public static ArrayList<Stakeholder> sellerList = new ArrayList<>();
+    public static ArrayList<Stakeholder> countryList = new ArrayList<>();
+    public static ArrayList<Stakeholder> auctionList = new ArrayList<>();
+    public static ArrayList<Artefact> artefactList = new ArrayList<>();
 
     public static boolean verify_Blockchain(ArrayList<Block> BC) {
-        int value = 0;
+
         for (int i = 0; i < BC.size(); i++) {
-            if (BC.get(i).calculateBlockHash().equals(BC.get(i).getHash())) {
-                value++;
+            //if the hash is accurate
+            String dataToHash = BC.get(i).getPreviousHash()
+                    + Long.toString(BC.get(i).getTimeStamp())
+                    + Integer.toString(BC.get(i).getNonce())
+                    + BC.get(i).getData().toString();
+            MessageDigest digest = null;
+            byte[] bytes = null;
+            try {
+                digest = MessageDigest.getInstance("SHA-256");
+                bytes = digest.digest(dataToHash.getBytes(StandardCharsets.UTF_8));
+            } catch (NoSuchAlgorithmException ex) {
+                System.out.println("The encoding is not supported");
             }
-            if (BC.get(i).getPreviousHash().equals(BC.get(i - 1).getHash())) {
-                value++;
+            StringBuffer buffer = new StringBuffer();
+            for (byte b : bytes) {
+                buffer.append(String.format("%02x", b));
             }
-            //still need to add for if it has been mined
+            if (!BC.get(i).calculateBlockHash().equals(buffer.toString())){
+                return false;
+            }
+            //if the previous hash is accurate
+            if (i > 0) {
+                if (!BC.get(i).getPreviousHash().equals(BC.get(i - 1).getHash())) {
+                    return false;
+                }
+            }
+            //if it has been mined
+            if(!BC.get(i).getHash().startsWith("0000")){
+                System.out.println(BC.get(i).getHash());
+                return false;
+            }
         }
-        if (value == BC.size() * 3) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     public static ArrayList<Block> blockchain = new ArrayList<>();
 
 
     public static void main(String[] args) {
+        //GUI interface
+        new GUI();
         //scanner
         Scanner scnr = new Scanner(System.in);
-        //list of objects for transaction option
-        ArrayList<Stakeholder> buyerList = new ArrayList<>();
-        ArrayList<Stakeholder> sellerList = new ArrayList<>();
-        ArrayList<Stakeholder> countryList = new ArrayList<>();
-        ArrayList<Stakeholder> auctionList = new ArrayList<>();
-        ArrayList<Artefact> artefactList = new ArrayList<>();
-        //list of objects for stakeholder option
-        String stakeID;
-        String stakeName;
-        String stakeAddress;
-        String stakeType;
-        double stakeBalance;
-
         //buyers
         Stakeholder buyer1 = new Stakeholder("buyer1", "Buyer 1", "111 buyer street", 100);
         buyerList.add(buyer1);
@@ -77,59 +93,65 @@ public class Main {
         artefactList.add(art1);
         Artefact art2 = new Artefact("art2", "antique cabinet", country1, seller2);
         artefactList.add(art2);
-        Artefact art3 = new Artefact("art3", "antique table", country1, seller2);
+        Artefact art3 = new Artefact("art3", "antique table", country2, seller2);
         artefactList.add(art3);
 
-        //pre-created transactions
+        //pre-created transactions to be logged in blockchain
         Transaction transaction1 = new Transaction(art1, seller1, buyer1, auctionHouse1, 15);
+        transactions.add(transaction1);
         Transaction transaction2 = new Transaction(art1, seller2, buyer1, auctionHouse1, 17);
+        transactions.add(transaction2);
         Transaction transaction3 = new Transaction(art2, seller1, buyer2, auctionHouse2, 25);
+        transactions.add(transaction3);
         Transaction transaction4 = new Transaction(art2, seller2, buyer1, auctionHouse1, 23);
+        transactions.add(transaction4);
         Transaction transaction5 = new Transaction(art3, seller1, buyer1, auctionHouse2, 14);
+        transactions.add(transaction5);
         Transaction transaction6 = new Transaction(art3, seller2, buyer2, auctionHouse2, 18);
+        transactions.add(transaction6);
 
-        //user interface transactions
-        Transaction data1 = null;
-        Transaction data2 = null;
-        Transaction data3 = null;
-
+        System.out.println(transaction1.getTimestamp());
         //creation of blockchain
 
 
         Block block1 = new Block(transaction1, null, new Date().getTime());
-        block1.setHash(block1.calculateBlockHash());
+        block1.setHash("0000" + block1.calculateBlockHash());
         blockchain.add(block1);
         Block block2 = new Block(transaction2, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
-        block2.setHash(block2.calculateBlockHash());
+        block2.setHash("0000" + block2.calculateBlockHash());
         blockchain.add(block2);
         Block block3 = new Block(transaction3, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
-        block3.setHash(block3.calculateBlockHash());
+        block3.setHash("0000" + block3.calculateBlockHash());
         blockchain.add(block3);
         Block block4 = new Block(transaction4, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
-        block4.setHash(block4.calculateBlockHash());
+        block4.setHash("0000" + block4.calculateBlockHash());
         blockchain.add(block4);
         Block block5 = new Block(transaction5, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
-        block5.setHash(block5.calculateBlockHash());
+        block5.setHash("0000" + block5.calculateBlockHash());
         blockchain.add(block5);
         Block block6 = new Block(transaction6, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
-        block6.setHash(block6.calculateBlockHash());
+        block6.setHash("0000" + block6.calculateBlockHash());
         blockchain.add(block6);
 
         //creation of prefix
         int prefix = 4;   //we want our hash to start with four zeroes
         String prefixString = new String(new char[prefix]).replace('\0', '0');
-        ArrayList<Transaction> transactions = new ArrayList<>();
 
         while (data1 == null || data2 == null || data3 == null) {
             String option;
             System.out.println("Do you want to add a stakeholder or transaction? Type s or t");
             System.out.println("Note: you must make 3 transaction.");
             option = scnr.nextLine();
-            while(!option.contains("s") && !option.contains("t")){
+            while(!option.equals("s") && !option.equals("t")){
                 System.out.println("Invalid response. Try again.");
                 option = scnr.nextLine();
             }
             //stakeholder option
+            String stakeID;
+            String stakeName;
+            String stakeAddress;
+            String stakeType;
+            double stakeBalance;
             if (option.contains("s")) {
                 Scanner stakeholderScanner = new Scanner(System.in);
                 System.out.println("What type of stakeholder do you want to create? Type the corresponding number.");
@@ -178,7 +200,6 @@ public class Main {
                 Stakeholder buyer = null;
                 Stakeholder auctionHouse = null;
 
-                System.out.println("Hello. Please create a transaction.");
                 //artefact info
                 System.out.println("Choose an artefact from the list and write it's ID.");
                 for (int i = 0; i < artefactList.size(); i++) {
@@ -273,12 +294,15 @@ public class Main {
 
                 if(data1 == null) {
                     data1 = new Transaction(artefact, seller, buyer, auctionHouse, price);
+                    transactions.add(data1);
                 }
                 else if(data2 == null) {
                     data2 = new Transaction(artefact, seller, buyer, auctionHouse, price);
+                    transactions.add(data2);
                 }
                 else if(data3 == null) {
                     data3 = new Transaction(artefact, seller, buyer, auctionHouse, price);
+                    transactions.add(data3);
                 }
                 else{
                     transactions.add(new Transaction(artefact, seller, buyer, auctionHouse, price));
@@ -286,7 +310,9 @@ public class Main {
             }
         }
         //data1-data3 should be filled by the user
+        blockchain.get(blockchain.size() - 1).calculateBlockHash();
         Block genesisBlock = new Block(data1, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
+        genesisBlock.setHash(genesisBlock.calculateBlockHash());
         genesisBlock.mineBlock(prefix); //changed from newBlock
         if (genesisBlock.getHash().substring(0, prefix).equals(prefixString) &&
                 verify_Blockchain(blockchain)) {
@@ -294,8 +320,10 @@ public class Main {
         } else {
             System.out.println("Malicious block, not added to the chain");
         }
+        blockchain.get(blockchain.size() - 1).calculateBlockHash();
         Block secondBlock = new Block(data2, blockchain.get(blockchain.size() - 1).getHash(), new
                 Date().getTime());
+        secondBlock.setHash(secondBlock.calculateBlockHash());
         secondBlock.mineBlock(prefix); //changed from newBlock
         if (secondBlock.getHash().substring(0, prefix).equals(prefixString) &&
                 verify_Blockchain(blockchain)) { //changed from ArrayList<Block> BC
@@ -303,8 +331,10 @@ public class Main {
         } else {
             System.out.println("Malicious block, not added to the chain");
         }
+        blockchain.get(blockchain.size() - 1).calculateBlockHash();
         Block newBlock = new Block(data3, blockchain.get(blockchain.size() - 1).getHash(),
                 new Date().getTime());
+        newBlock.setHash(newBlock.calculateBlockHash());
         newBlock.mineBlock(prefix);
         if (newBlock.getHash().substring(0, prefix).equals(prefixString) &&
                 verify_Blockchain(blockchain)) {
@@ -313,39 +343,10 @@ public class Main {
             System.out.println("Malicious block, not added to the chain");
         }
 
-
-
-        //Creating the Frame
-        JFrame frame = new JFrame("Chat Frame");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
-
-        //Creating the MenuBar and adding components
-        JMenuBar mb = new JMenuBar();
-        JMenu m1 = new JMenu("BLOCKCHAIN GUI");
-        JMenu m2 = new JMenu("Selinna + Payton");
-        mb.add(m1);
-        mb.add(m2);
-
-
-        //Creating the panel at bottom and adding components
-        JPanel panel = new JPanel(); // the panel is not visible in output
-        JLabel label = new JLabel("Enter Transaction");
-        JTextField tf = new JTextField(10); // accepts upto 10 characters
-        JButton send = new JButton("Send");
-        JButton reset = new JButton("Reset");
-        panel.add(label); // Components Added using Flow Layout
-        panel.add(tf);
-        panel.add(send);
-        panel.add(reset);
-
-        // Text Area at the Center
-        JTextArea ta = new JTextArea();
-
-        frame.getContentPane().add(BorderLayout.SOUTH, panel);
-        frame.getContentPane().add(BorderLayout.NORTH, mb);
-        frame.getContentPane().add(BorderLayout.CENTER, ta);
-        frame.setVisible(true);
+        System.out.println("Blockchain:");
+        for(int i = 0; i < blockchain.size(); i++){
+            System.out.println(blockchain.get(i));
+        }
     }
 
 

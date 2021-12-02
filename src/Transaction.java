@@ -1,6 +1,11 @@
 package com.company;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Transaction {
     private Artefact artefact;
@@ -10,9 +15,24 @@ public class Transaction {
     private Stakeholder AuctionHouse;
     private double price;
 
+    private static final String DATE_FORMATTER= "yyyy-MM-dd HH:mm:ss";
+
+
+
     public Transaction(Artefact a, Stakeholder sell, Stakeholder buy, Stakeholder auction, double p){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
+        SimpleDateFormat f = new SimpleDateFormat(DATE_FORMATTER);
+        String time = LocalDateTime.now().format(formatter);
+        try {
+            Date d = f.parse(time);
+            timestamp = d.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         artefact = a;
-        timestamp = LocalDateTime.now();
+
         seller = sell;
         buyer = buy;
         AuctionHouse = auction;
