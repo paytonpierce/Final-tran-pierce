@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
@@ -157,7 +158,7 @@ public class Block {
         //The sale must not happen if the artefact doesn’t have at least 2 transactions after 2001
         boolean value = true;
         int loggedCount = 0;
-        if (retrieveProvenance(t.getArtefact().getId(), (t.getTimestamp().getYear() - 2001)) < 2) {
+        if (retrieveProvenance(t.getArtefact().getId(), (t.getTimestamp().getSecond())) < 2) {
             System.out.println("The artefact does not have at least two transactions after 2001. Cannot run!");
             //return false;
         }
@@ -200,8 +201,10 @@ public class Block {
 
     public int retrieveProvenance(String id, long timestamp) {
         int count = 0;
+        LocalDateTime time2001 = LocalDateTime.of(2001, Month.DECEMBER,31,23,59,59);
         for (int i = 0; i < Main.blockchain.size(); i++) {
-            if ( Main.blockchain.get(i).getData().getArtefact().getId().equals(this.data.getArtefact().getId()) && timestamp > 0) {
+            boolean time = Main.blockchain.get(i).getData().getTimestamp().isAfter(time2001);
+            if ( Main.blockchain.get(i).getData().getArtefact().getId().equals(this.data.getArtefact().getId()) && time) {
                 count++;
             }
         }

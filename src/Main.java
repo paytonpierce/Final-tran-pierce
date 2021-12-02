@@ -350,7 +350,7 @@ public class Main{
         }
 
         System.out.println("Blockchain:");
-        for(int i = 6; i < blockchain.size(); i++){
+        for(int i = 7; i < blockchain.size(); i++){
             System.out.println(blockchain.get(i));
         }
     }
