@@ -1,9 +1,12 @@
 package com.company;
 
+import com.sun.source.tree.ArrayAccessTree;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -28,6 +31,9 @@ public class Main {
             return false;
         }
     }
+
+    public static ArrayList<Block> blockchain = new ArrayList<>();
+
 
     public static void main(String[] args) {
         //scanner
@@ -88,7 +94,8 @@ public class Main {
         Transaction data3 = null;
 
         //creation of blockchain
-        ArrayList<Block> blockchain = new ArrayList<>();
+
+
         Block block1 = new Block(transaction1, null, new Date().getTime());
         block1.setHash(block1.calculateBlockHash());
         blockchain.add(block1);
@@ -306,6 +313,8 @@ public class Main {
             System.out.println("Malicious block, not added to the chain");
         }
 
+
+
         //Creating the Frame
         JFrame frame = new JFrame("Chat Frame");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -338,4 +347,6 @@ public class Main {
         frame.getContentPane().add(BorderLayout.CENTER, ta);
         frame.setVisible(true);
     }
+
+
 }

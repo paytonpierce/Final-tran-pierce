@@ -1,9 +1,10 @@
 package com.company;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -117,12 +118,15 @@ public class Block {
 
     }
 
+    public ArrayList<Block> transactionCounter = new ArrayList<>();
+
+
     public boolean TreatySC(Transaction t) {
         //The sale must not happen if the artefact doesn’t have at least 2 transactions after 2001
-
+        if (transactionCounter.size() < 2) {
+            System.out.println("The artefact does not have at least two transactions after 2001. Cannot run!");
+        }
         //already logged in the blockchain
-
-
         //must have enough money to cover the price:
         if (t.getBuyer().getBalance() >= t.getPrice()) {
             //10%
@@ -140,12 +144,17 @@ public class Block {
         }
     }
 
-    public Transaction retrieveProvenance(String id) {
-        if (this.data.getArtefact().getId() == id) {
-            return this.data;
-        } else {
-            return null;
-        }
+    public ArrayList<Block> retrieveProvenance(String id) {
+        for (int i=0; i<Main.blockchain.size(); i++)
+            if (this.data.getArtefact().getId() == id) {
+                transactionCounter.add(Main.blockchain.get(i));
+
+
+            } else {
+                return null;
+            }
+        return transactionCounter;
+
     }
 
     public Transaction retrieveProvenance(String id, long time) {
