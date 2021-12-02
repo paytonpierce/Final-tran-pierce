@@ -98,7 +98,7 @@ public class Block {
 
     public void mineBlock(int prefix) {
 
-        //If the transaction meets the stakeholders agreement in TreatySC, mine the block;
+        //If the transaction meets the stakeholders' agreement in TreatySC, mine the block;
         String hashValue = null;
         Transaction data = null;
         if (TreatySC(data) == true) {
