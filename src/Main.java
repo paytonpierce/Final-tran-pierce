@@ -157,6 +157,7 @@ public class Main{
             String stakeType;
             double stakeBalance;
             if (option.contains("s")) {
+                Scanner numScanner = new Scanner(System.in);
                 Scanner stakeholderScanner = new Scanner(System.in);
                 System.out.println("What type of stakeholder do you want to create? Type the corresponding number.");
                 System.out.println("1. Seller");
@@ -166,7 +167,7 @@ public class Main{
                 int type = stakeholderScanner.nextInt();
                 while (type < 1 || type > 4) {
                     System.out.println("Invalid response. Try again.");
-                    type = stakeholderScanner.nextInt();
+                    type = numScanner.nextInt();
                 }
                 if (type == 1) {
                     stakeType = "Seller";
@@ -178,6 +179,7 @@ public class Main{
                     stakeType = "Auction House";
                 }
                 System.out.println("Next, please write the ID. This must differ from all other ID's");
+                String temp = stakeholderScanner.nextLine();
                 stakeID = stakeholderScanner.nextLine();
                 System.out.println("Please write the stakeholder name. This will be used to identify them.");
                 stakeName = stakeholderScanner.nextLine();
