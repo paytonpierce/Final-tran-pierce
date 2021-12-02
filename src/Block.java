@@ -20,7 +20,13 @@ public class Block {
         timeStamp = t;
         nonce = new Random(10).nextInt();
     }
-
+    //Copy Constructor
+    public Block(Block block) {
+        previousHash = block.previousHash;
+        data = block.data;
+        timeStamp = block.timeStamp;
+        nonce = block.nonce;
+    }
 
     public String getPreviousHash() {
         return this.previousHash;
@@ -122,7 +128,7 @@ public class Block {
             //10%
             t.getAuctionHouse().setBalance((t.getArtefact().getOwner().getBalance()) + (.10 * t.getPrice()));
             //20%
-            t.getArtefact().getCountry().setBalance(t.getArtefact().getCountry().getBalance() + .2*t.getPrice());
+            t.getArtefact().getCountry().setBalance(t.getArtefact().getCountry().getBalance() + .20 * t.getPrice());
             double ArtefactBal = t.getArtefact().getOwner().getBalance();
             t.getArtefact().getOwner().setBalance(ArtefactBal + (.20 * t.getPrice()));
             //70%

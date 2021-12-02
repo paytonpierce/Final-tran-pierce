@@ -11,6 +11,12 @@ public class Artefact {
         country = c;
         owner = s;
     }
+    public Artefact(Artefact a){
+        Id = a.Id;
+        name = a.name;
+        country = a.country;
+        owner = a.owner;
+    }
     public String getId(){
         return this.Id;
     }

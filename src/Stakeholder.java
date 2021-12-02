@@ -11,6 +11,12 @@ public class Stakeholder {
         address = a;
         balance = b;
     }
+    public Stakeholder(Stakeholder s){
+        Id = s.Id;
+        name = s.name;
+        address = s.address;
+        balance = s.balance;
+    }
     public String getId(){
         return this.Id;
     }

@@ -18,6 +18,15 @@ public class Transaction {
         AuctionHouse = auction;
         price = p;
     }
+    //copy constructor
+    public Transaction(Transaction transaction){
+        artefact = transaction.artefact;
+        timestamp = transaction.timestamp;
+        seller = transaction.seller;
+        buyer = transaction.buyer;
+        AuctionHouse = transaction.AuctionHouse;
+        price = transaction.price;
+    }
     public Artefact getArtefact(){
         return this.artefact;
     }
