@@ -23,7 +23,7 @@ public class Main{
 
     public static boolean verify_Blockchain(ArrayList<Block> BC) {
 
-        for (int i = 0; i < BC.size(); i++) {
+        for (int i = 6; i < BC.size(); i++) {
             //if the hash is accurate
             String dataToHash = BC.get(i).getPreviousHash()
                     + Long.toString(BC.get(i).getTimeStamp())
@@ -110,27 +110,33 @@ public class Main{
         transactions.add(transaction5);
         Transaction transaction6 = new Transaction(art3, seller2, buyer2, auctionHouse2, 18);
         transactions.add(transaction6);
+        Transaction transaction7 = new Transaction(art1, seller1, buyer1, auctionHouse1, 15);
+        transactions.add(transaction7);
         //creation of blockchain
 
 
         Block block1 = new Block(transaction1, null, new Date().getTime());
-        block1.setHash("0000" + block1.calculateBlockHash());
+        block1.setHash(block1.calculateBlockHash());
         blockchain.add(block1);
         Block block2 = new Block(transaction2, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
-        block2.setHash("0000" + block2.calculateBlockHash());
+        block2.setHash(block2.calculateBlockHash());
         blockchain.add(block2);
         Block block3 = new Block(transaction3, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
-        block3.setHash("0000" + block3.calculateBlockHash());
+        block3.setHash(block3.calculateBlockHash());
         blockchain.add(block3);
         Block block4 = new Block(transaction4, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
-        block4.setHash("0000" + block4.calculateBlockHash());
+        block4.setHash(block4.calculateBlockHash());
         blockchain.add(block4);
         Block block5 = new Block(transaction5, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
-        block5.setHash("0000" + block5.calculateBlockHash());
+        block5.setHash(block5.calculateBlockHash());
         blockchain.add(block5);
         Block block6 = new Block(transaction6, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
-        block6.setHash("0000" + block6.calculateBlockHash());
+        block6.setHash(block6.calculateBlockHash());
         blockchain.add(block6);
+        Block block7 = new Block(transaction7, blockchain.get(blockchain.size() - 1).getHash(), new Date().getTime());
+        block7.setHash(block7.calculateBlockHash());
+        block7.mineBlock(4);
+        blockchain.add(block7);
 
         //creation of prefix
         int prefix = 4;   //we want our hash to start with four zeroes
@@ -342,7 +348,7 @@ public class Main{
         }
 
         System.out.println("Blockchain:");
-        for(int i = 0; i < blockchain.size(); i++){
+        for(int i = 6; i < blockchain.size(); i++){
             System.out.println(blockchain.get(i));
         }
     }
