@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 public class GUI {
 
@@ -459,5 +460,43 @@ public class GUI {
         frame.getContentPane().add(BorderLayout.NORTH, mb);
         frame.getContentPane().add(BorderLayout.CENTER, buttons);
         frame.setVisible(true);
+
+        Main.blockchain.get(Main.blockchain.size() - 1).calculateBlockHash();
+        Block genesisBlock = new Block(Main.data1, Main.blockchain.get(Main.blockchain.size() - 1).getHash(), new Date().getTime());
+        genesisBlock.setHash(genesisBlock.calculateBlockHash());
+        genesisBlock.mineBlock(4); //changed from newBlock
+        if (genesisBlock.getHash().substring(0, 4).equals("0000") &&
+                Main.verify_Blockchain(Main.blockchain)) {
+            Main.blockchain.add(genesisBlock); //changed from newBlock
+        } else {
+            System.out.println("Malicious block, not added to the chain");
+        }
+        Main.blockchain.get(Main.blockchain.size() - 1).calculateBlockHash();
+        Block secondBlock = new Block(Main.data2, Main.blockchain.get(Main.blockchain.size() - 1).getHash(), new
+                Date().getTime());
+        secondBlock.setHash(secondBlock.calculateBlockHash());
+        secondBlock.mineBlock(4); //changed from newBlock
+        if (secondBlock.getHash().substring(0, 4).equals("0000") &&
+                Main.verify_Blockchain(Main.blockchain)) { //changed from ArrayList<Block> BC
+            Main.blockchain.add(secondBlock);
+        } else {
+            System.out.println("Malicious block, not added to the chain");
+        }
+        Main.blockchain.get(Main.blockchain.size() - 1).calculateBlockHash();
+        Block newBlock = new Block(Main.data3, Main.blockchain.get(Main.blockchain.size() - 1).getHash(),
+                new Date().getTime());
+        newBlock.setHash(newBlock.calculateBlockHash());
+        newBlock.mineBlock(4);
+        if (newBlock.getHash().substring(0, 4).equals("0000") &&
+                Main.verify_Blockchain(Main.blockchain)) {
+            Main.blockchain.add(newBlock);
+        } else {
+            System.out.println("Malicious block, not added to the chain");
+        }
+
+        System.out.println("Blockchain:");
+        for(int i = 0; i < Main.blockchain.size(); i++){
+            System.out.println(Main.blockchain.get(i));
+        }
     }
 }

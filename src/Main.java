@@ -41,6 +41,7 @@ public class Main{
             for (byte b : bytes) {
                 buffer.append(String.format("%02x", b));
             }
+            //if calculateBlockHash is accurate
             if (!BC.get(i).calculateBlockHash().equals(buffer.toString())){
                 return false;
             }
@@ -109,8 +110,6 @@ public class Main{
         transactions.add(transaction5);
         Transaction transaction6 = new Transaction(art3, seller2, buyer2, auctionHouse2, 18);
         transactions.add(transaction6);
-
-        System.out.println(transaction1.getTimestamp());
         //creation of blockchain
 
 
@@ -143,7 +142,6 @@ public class Main{
             System.out.println("Note: you must make 3 transaction.");
             option = scnr.nextLine();
             while(!option.equals("s") && !option.equals("t")){
-                System.out.println("Invalid response. Try again.");
                 option = scnr.nextLine();
             }
             //stakeholder option
